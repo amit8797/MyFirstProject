@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div align="center" >
+<h2>AMIT DIAGNOSTIC CENTRE</h2>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+	$("#Radio1").click(function(){
+				$("#d4").html(" ");
+				$("#d5").html(" ");
+				$("#d3").html(" ");
+				$("#d2").html(" ");
+				$("#d2").append('<input type="radio" name="choice" value="generateByEmail" id="RadioAddE"> Add Tests by Email<br><br>');
+				$("#d2").append('<input type="radio" name="choice" value="generateByPhone" id="RadioAddP"> Add Tests by Phone<br>');
+				
+				$("#RadioAddE").click(function(){
+					
+						$("#d3").html(" ");
+						$("#d3").append('<form id="f2">EMAIL:<br><input type="text" name="email" required id="a1"><br>TEST<br><input type="text" name="test" required id="a2"><br><input type="submit" value="Submit"><br>');
+						$("#f2").submit(function(e){
+						
+							//var searchCriteria = "emailId";
+							var searchKey=$("#a1").val();
+							var testName = $("#a2").val();
+							e.preventDefault();
+							$.ajax({
+								type: 'POST',
+								//data: $('form').serialize(),
+								data : {email : searchKey , test : testName},
+								datatype : "json",
+								url: "http://localhost:8080/testByEmail",
+								success : function(res){
+									alert(res);
+									$("#d4").html(" ");
+									$("#d4").append(res);
+								}
+							});
+						});	
+						});
+						
+						$("#RadioAddP").click(function(){
+						$("#d3").html(" ");
+						$("#d3").append('<form id="f2">PHONE:<br><input type="text" name="phone" required id="a3"><br><input type="text" name="date" required id="a4"><br><input type="submit" value="Submit"><br>');
+						$("#f2").submit(function(e){
+								e.preventDefault();
+								$.ajax({
+									type: 'POST',
+									data: $('form').serialize(),
+									url: "http://localhost:8080/testByPhone",
+									success : function(res){
+										alert(res);
+										$("#d4").html(" ");
+										$("#d4").append(res);
+										
+									}
+								});
+							});	
+				
+						});
+				
+						
+				
+			//}
+		//});	
+	});	
+	
+//});
+//$(document).ready(function(){
+	$("#Radio2").click(function(){
+	/*
+		$.ajax({
+			type: 'POST',
+			url: "http://localhost:8080/reportDetailByEmail",
+			success: function(data){*/
+			alert("hsd");
+				$("#d4").html(" ");
+				$("#d5").html(" ");
+				$("#d3").html(" ");
+				$("#d2").html(" ");
+				$("#d2").append('<input type="radio" name="choice" value="generateByEmail" id="RadioGenE"> Generate Results by Email<br><br>');
+				$("#d2").append('<input type="radio" name="choice" value="generateByEmail" id="RadioGenP"> Generate Results by Phone<br>');
+				
+				$("#RadioGenE").click(function(){
+						$("#d4").html(" ");
+						$("#d5").html(" ");
+						$("#d3").html(" ");
+						$("#d3").append('<form id="f2">EMAIL:<br><input type="text" name="email" required id="a5"><br>DATE:<br><input type="text" name="date" required id="a6"><br><input type="submit" value="Submit"><br>');
+						$("#f2").submit(function(e){
+						var searchKey=$("#a5").val();
+						var testDate = $("#a6").val();
+							e.preventDefault();
+							$.ajax({
+								type: 'POST',
+								//data: $('form').serialize(),
+								data : {email : searchKey , testDt : testDate},
+								datatype : "json",
+								url: "http://localhost:8080/reportDetailByEmail",
+								
+								success : function(res){
+								alert("res");
+																			
+								}	
+							});
+						});		
+					
+				
+				});
+				$("#RadioGenP").click(function(){
+						$("#d4").html(" ");
+						$("#d5").html(" ");
+						$("#d3").html(" ");
+						$("#d3").append('<form id="f2">PHONE:<br><input type="text" name="phone" required id="a7"><br>DATE:<br><input type="text" name="date" required id="a8"><br><input type="submit" value="Submit"><br>');
+						$("#f2").submit(function(e){
+							e.preventDefault();
+							$.ajax({
+								type: 'POST',
+								data: $('form').serialize(),
+								url: "http://localhost:8080/reportDetailByPhone",
+								success : function(res){
+									$("#d5").html(" ");
+									if(res=="PHONE INVALID!"){
+										$("#d5").append(res);
+									}else if(res=="PHONE NOT IN DB!"){
+										$("#d5").append(res);
+									}else{
+									console.log(res);
+									var x= JSON.parse(res);
+									var n=0;
+									var count=0;
+									for(var k in x) {
+										$("#d5").append(k+' : '+x[k]+'<br>');
+										count++;
+										if(count>=5){
+											n=parseInt(n)+parseInt(x[k]);
+										}
+									}
+									$("#d5").append("TOTAL : " + n);	
+									}	
+								}	
+							});
+						});
+						
+						
+						
+						
+				});
+			//}	
+		});
+	});
+//});
+
+</script>
+  <input type="radio" name="choice" value="add" id="Radio1"> Add Tests<br>
+  <input type="radio" name="choice" value="generate" id="Radio2"> Generate Results<br> 
+  <br><br>
+	
+</div>
+
+<div id="d2" align="center">
+</div>
+<br><br>
+<div id="d3" align="center"></div>
+<br><br>
+<div id="d5" align="center"></div>
+<br><br>
+<div id="d4" align="center"></div>
+</body>
+</html>
